@@ -63,7 +63,7 @@ class _DynamicLinkState extends State<DynamicLink> with Control, ControlInput {
 
     if (f != null) {
       validators.add(
-        f(context),
+        f(),
       );
     }
 

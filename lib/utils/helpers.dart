@@ -221,7 +221,7 @@ Future<void> showNotification({
       AndroidNotificationDetails(
     'FrappeChannelId',
     'FrappeChannelName',
-    'FrappeChannelDescription',
+    //'FrappeChannelDescription',
     // importance: Importance.max,
     // priority: Priority.high,
     ticker: 'ticker',

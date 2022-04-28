@@ -63,7 +63,7 @@ class _LinkFieldState extends State<LinkField> with Control, ControlInput {
 
     if (f != null) {
       validators.add(
-        f(context),
+        f(),
       );
     }
 

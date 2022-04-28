@@ -24,6 +24,9 @@ import '../../utils/helpers.dart';
 import '../../utils/dio_helper.dart';
 import '../../model/offline_storage.dart';
 
+import 'package:flutter/foundation.dart';
+import 'dart:developer' as developer;
+
 class DioApi implements Api {
   Future<LoginResponse> login(LoginRequest loginRequest) async {
     try {
@@ -617,11 +620,13 @@ class DioApi implements Api {
       "doctype": doctype,
       ...formValue,
     };
-
+    var tmpdata = json.encode(data);
+    LogPrint(tmpdata);
     try {
       final response = await DioHelper.dio.post(
         '/method/frappe.desk.form.save.savedocs',
-        data: "doc=${Uri.encodeComponent(json.encode(data))}&action=Save",
+        //data: "doc=${Uri.encodeComponent(json.encode(data))}&action=Save",
+        data: "doc=${Uri.encodeComponent(tmpdata)}&action=Save",
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
         ),
@@ -1166,6 +1171,27 @@ class DioApi implements Api {
         }
       } else {
         throw ErrorResponse();
+      }
+    }
+  }
+  static void LogPrint(Object object) async {
+    int defaultPrintLength = 1020;
+    if (object == null || object.toString().length <= defaultPrintLength) {
+      print(object);
+    } else {
+      String log = object.toString();
+      int start = 0;
+      int endIndex = defaultPrintLength;
+      int logLength = log.length;
+      int tmpLogLength = log.length;
+      while (endIndex < logLength) {
+        print(log.substring(start, endIndex));
+        endIndex += defaultPrintLength;
+        start += defaultPrintLength;
+        tmpLogLength -= defaultPrintLength;
+      }
+      if (tmpLogLength > 0) {
+        print(log.substring(start, logLength));
       }
     }
   }

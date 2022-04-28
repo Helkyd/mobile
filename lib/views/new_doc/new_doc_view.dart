@@ -19,6 +19,9 @@ import '../../utils/enums.dart';
 import '../../widgets/custom_form.dart';
 import '../../widgets/frappe_button.dart';
 
+import 'dart:developer';
+import 'package:flutter/foundation.dart';
+
 class NewDoc extends StatefulWidget {
   final DoctypeResponse meta;
 
@@ -61,7 +64,7 @@ class _NewDocState extends State<NewDoc> {
                       onPressed: () async {
                         if (formHelper.saveAndValidate()) {
                           var formValue = formHelper.getFormValue();
-
+                          //LogPrint(formValue);
                           try {
                             await model.saveDoc(
                               formValue: formValue,
@@ -77,6 +80,8 @@ class _NewDocState extends State<NewDoc> {
                                 context,
                               );
                             } else {
+                              //debugPrint('item: $_e.statusMessage');
+                              //log('item: $_e.statusMessage');
                               FrappeAlert.errorAlert(
                                 title: _e.statusMessage,
                                 context: context,
@@ -98,4 +103,25 @@ class _NewDocState extends State<NewDoc> {
       ),
     );
   }
+}
+void LogPrint(Object object) async {
+int defaultPrintLength = 1020;
+if (object == null || object.toString().length <= defaultPrintLength) {
+print(object);
+} else {
+String log = object.toString();
+int start = 0;
+int endIndex = defaultPrintLength;
+int logLength = log.length;
+int tmpLogLength = log.length;
+while (endIndex < logLength) {
+print(log.substring(start, endIndex));
+endIndex += defaultPrintLength;
+start += defaultPrintLength;
+tmpLogLength -= defaultPrintLength;
+}
+if (tmpLogLength > 0) {
+print(log.substring(start, logLength));
+}
+}
 }
