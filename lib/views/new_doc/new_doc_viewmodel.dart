@@ -109,7 +109,6 @@ class NewDocViewModel extends BaseViewModel {
                   LogPrint(value[0][0]);
                   if (value[0][0] == null){
                     toremove.add(key);
-                    //formValue.remove(key);
                   }
 
                 }
