@@ -92,12 +92,14 @@ class NewDocViewModel extends BaseViewModel {
       );
     } else {
       try {
-        //Helkyds 28-04-2022;
+        //Helkyds 02-05-2022;
         // TO CHECK AND REMOVE IF EMPTY
         // Check if reorder_levels [ warehouse_group,warehouse,warehouse_reorder_level,warehouse_reorder_qty,material_request_type are empty and remove
         // Check if Item_defaults: company,default_warehouse,default_price_list is empty and remove
         // Check if "customer_items":[{"customer_name":"","customer_group":"","ref_code":""}] empty and remove
         // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
+        // Still missing to check how to pass the Price to the price list
+
         LogPrint("ANTEssssss");
         //LogPrint(formValue);
         var toremove = [];
@@ -119,9 +121,21 @@ class NewDocViewModel extends BaseViewModel {
             }
           },
         );
+        late Map newformValue;
         if (toremove.isNotEmpty){
           LogPrint('toremove ');
           LogPrint(toremove);
+          //newformValue = Map.fromIterable(formValue.keys.where((k) => k != toremove[0] && k != toremove[1] && k != toremove[2] && k != toremove[3]),
+          //key: (k) => k, value: (v) => formValue[v]);
+
+          newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
+
+          LogPrint(newformValue);
+          for (var v in toremove) {
+            newformValue.remove(v);
+          }
+          LogPrint('DEPOIS DO REMOVE.....');
+          LogPrint(newformValue);
           //toremove.forEach((element) {formValue.remove(element);});
           /*
           for (var v in toremove){
@@ -134,6 +148,9 @@ class NewDocViewModel extends BaseViewModel {
         }
         LogPrint("DEPOOsssss");
         LogPrint(formValue);
+        if (newformValue.isNotEmpty){
+          formValue = newformValue;
+        }
 
         var response = await locator<Api>().saveDocs(
           meta.docs[0].name,
@@ -158,12 +175,7 @@ class NewDocViewModel extends BaseViewModel {
       }
     }
   }
-  void debugPrintSynchronouslyWithText(String message,
-      {int? wrapWidth}) {
-    message =
-    "[${DateTime.now()} ]: $message";
-    debugPrintSynchronously(message, wrapWidth: wrapWidth);
-  }
+
   static void LogPrint(Object object) async {
     int defaultPrintLength = 1020;
     if (object == null || object.toString().length <= defaultPrintLength) {

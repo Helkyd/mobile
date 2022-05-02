@@ -621,7 +621,8 @@ class DioApi implements Api {
       ...formValue,
     };
     var tmpdata = json.encode(data);
-    LogPrint(tmpdata);
+    LogPrint("dio-api: savDocs");
+    //LogPrint(tmpdata);
     try {
       final response = await DioHelper.dio.post(
         '/method/frappe.desk.form.save.savedocs',

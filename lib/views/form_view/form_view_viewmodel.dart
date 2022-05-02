@@ -160,6 +160,52 @@ class FormViewViewModel extends BaseViewModel {
         ...doc,
         ...formValue,
       };
+      //Helkyds 02-05-2022;
+      // TO CHECK AND REMOVE IF EMPTY
+      // Check if reorder_levels [ warehouse_group,warehouse,warehouse_reorder_level,warehouse_reorder_qty,material_request_type are empty and remove
+      // Check if Item_defaults: company,default_warehouse,default_price_list is empty and remove
+      // Check if "customer_items":[{"customer_name":"","customer_group":"","ref_code":""}] empty and remove
+      // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
+      // Still missing to check how to pass the Price to the price list
+
+      LogPrint("ANTEssssss");
+      var toremove = [];
+      formValue.forEach(
+            (key, value) {
+
+          if (key == "reorder_levels" || key == "item_defaults" || key == "customer_items" || key == "taxes"){
+            //check if empty
+            LogPrint(value[0][0]);
+            if (value[0][0] == null){
+              toremove.add(key);
+            }
+
+          }
+        },
+      );
+
+      late Map newformValue;
+      if (toremove.isNotEmpty){
+        LogPrint('toremove ');
+        LogPrint(toremove);
+        //newformValue = Map.fromIterable(formValue.keys.where((k) => k != toremove[0] && k != toremove[1] && k != toremove[2] && k != toremove[3]),
+        //    key: (k) => k, value: (v) => formValue[v]);
+
+        newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
+
+        LogPrint(newformValue);
+        for (var v in toremove) {
+          newformValue.remove(v);
+        }
+        LogPrint('DEPOIS DO REMOVE.....');
+        LogPrint(newformValue);
+
+      }
+      LogPrint("DEPOOsssss");
+      LogPrint(formValue);
+      if (newformValue.isNotEmpty){
+        formValue = newformValue;
+      }
 
       try {
         var response = await locator<Api>().saveDocs(
@@ -185,6 +231,27 @@ class FormViewViewModel extends BaseViewModel {
       } catch (e) {
         LoadingIndicator.stopLoading();
         throw e;
+      }
+    }
+  }
+  static void LogPrint(Object object) async {
+    int defaultPrintLength = 1020;
+    if (object == null || object.toString().length <= defaultPrintLength) {
+      print(object);
+    } else {
+      String log = object.toString();
+      int start = 0;
+      int endIndex = defaultPrintLength;
+      int logLength = log.length;
+      int tmpLogLength = log.length;
+      while (endIndex < logLength) {
+        print(log.substring(start, endIndex));
+        endIndex += defaultPrintLength;
+        start += defaultPrintLength;
+        tmpLogLength -= defaultPrintLength;
+      }
+      if (tmpLogLength > 0) {
+        print(log.substring(start, logLength));
       }
     }
   }
