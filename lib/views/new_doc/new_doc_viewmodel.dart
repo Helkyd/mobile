@@ -100,7 +100,7 @@ class NewDocViewModel extends BaseViewModel {
         // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
         // Still missing to check how to pass the Price to the price list
 
-        LogPrint("ANTEssssss");
+        LogPrint("new_doc_viewmodel ANTEssssss");
         //LogPrint(formValue);
         var toremove = [];
         formValue.forEach(
@@ -116,9 +116,10 @@ class NewDocViewModel extends BaseViewModel {
                 }
 
 
-            if (value is Uint8List) {
-              formValue[key] = "data:image/png;base64,${base64.encode(value)}";
-            }
+            //if (value is Uint8List) {
+              //formValue[key] = "data:image/png;base64,${base64.encode(value)}";
+            //}
+
           },
         );
         late Map newformValue;
@@ -146,17 +147,23 @@ class NewDocViewModel extends BaseViewModel {
           }
           */
         }
-        LogPrint("DEPOOsssss");
+        LogPrint("new_doc_viewmodel DEPOOsssss");
         LogPrint(formValue);
+        LogPrint("metadoc");
+        LogPrint(meta.docs[0].name);
         if (newformValue.isNotEmpty){
+          LogPrint("newformValue VAZIO.....");
           formValue = newformValue;
         }
+        //convert
+        //Map tmpdata = Uri.encodeComponent(formValue) as Map;
 
         var response = await locator<Api>().saveDocs(
           meta.docs[0].name,
           formValue,
         );
-        developer.log('response: $response');
+        LogPrint('response');
+        LogPrint(response);
 
         LoadingIndicator.stopLoading();
         NavigationHelper.pushReplacement(

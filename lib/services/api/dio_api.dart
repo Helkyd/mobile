@@ -616,13 +616,14 @@ class DioApi implements Api {
   }
 
   Future saveDocs(String doctype, Map formValue) async {
+    LogPrint("dio-api: savDocs");
     var data = {
       "doctype": doctype,
       ...formValue,
     };
     var tmpdata = json.encode(data);
-    LogPrint("dio-api: savDocs");
-    //LogPrint(tmpdata);
+    LogPrint("dio-api - savDocs");
+    LogPrint(tmpdata);
     try {
       final response = await DioHelper.dio.post(
         '/method/frappe.desk.form.save.savedocs',

@@ -168,7 +168,7 @@ class FormViewViewModel extends BaseViewModel {
       // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
       // Still missing to check how to pass the Price to the price list
 
-      LogPrint("ANTEssssss");
+      LogPrint("form_view_viewmodel ANTEssssss");
       var toremove = [];
       formValue.forEach(
             (key, value) {
@@ -201,7 +201,7 @@ class FormViewViewModel extends BaseViewModel {
         LogPrint(newformValue);
 
       }
-      LogPrint("DEPOOsssss");
+      LogPrint("form_view_viewmodel DEPOOsssss");
       LogPrint(formValue);
       if (newformValue.isNotEmpty){
         formValue = newformValue;

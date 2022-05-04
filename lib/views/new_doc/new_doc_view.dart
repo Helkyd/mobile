@@ -64,7 +64,12 @@ class _NewDocState extends State<NewDoc> {
                       onPressed: () async {
                         if (formHelper.saveAndValidate()) {
                           var formValue = formHelper.getFormValue();
-                          //LogPrint(formValue);
+                          LogPrint("new_doc_view");
+                          LogPrint(formValue);
+                          LogPrint("widget.meta");
+                          LogPrint(widget.meta);
+                          LogPrint("context");
+                          LogPrint(context);
                           try {
                             await model.saveDoc(
                               formValue: formValue,
@@ -72,6 +77,8 @@ class _NewDocState extends State<NewDoc> {
                               context: context,
                             );
                           } catch (e) {
+                            LogPrint(e);
+                            LogPrint(e.statusMessage);
                             var _e = e as ErrorResponse;
 
                             if (_e.statusCode ==
