@@ -147,6 +147,28 @@ class NewDocViewModel extends BaseViewModel {
           }
           */
         }
+        //Item Price not adding Item name
+        LogPrint("Check Item Price - Item name");
+        LogPrint(formValue['item_code']);
+        //formValue.update('item_name', (value) => formValue['item_code']);
+        //formValue.update('item_name', (value) => 'TESTES');
+        //formValue['item_name'] = 'TESTES';
+        LogPrint(formValue['item_name']);
+        if (formValue['item_name'] == null){
+          LogPrint('NAO TEM VALOR...');
+          newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
+          LogPrint(newformValue);
+          formValue.forEach(
+            (key, value) {
+              if (key == "item_name"){
+                LogPrint('TEM que update este...');
+              }
+            }
+          );
+
+        }
+
+
         LogPrint("new_doc_viewmodel DEPOOsssss");
         LogPrint(formValue);
         LogPrint("metadoc");
