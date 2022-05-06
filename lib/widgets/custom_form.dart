@@ -36,6 +36,9 @@ class CustomForm extends StatelessWidget {
       model: CustomFormViewModel(),
       builder: (context, model, child) => FormBuilder(
         onChanged: () {
+          LogPrint('custom_form - OnChanged');
+          LogPrint(formHelper.getFormValue());
+
           formHelper.save();
           model.handleFormDataChange(formHelper.getFormValue());
 
@@ -86,6 +89,7 @@ class CustomFormViewModel extends BaseViewModel {
   }
 
   handleDependsOn() {
+    LogPrint('custom_form - handleDependsOn');
     var formValEncoded = jsonEncode(doc);
     var dependsOnFields = fields
         .where(
@@ -95,6 +99,8 @@ class CustomFormViewModel extends BaseViewModel {
         .toList();
     dependsOnFields.forEach(
       (field) {
+        LogPrint('dependsOnFields');
+        LogPrint(field.fieldname);
         if (field.dependsOn != null) {
           if (field.dependsOn!.startsWith("eval")) {
             var dependsOnDocProperty = field.dependsOn!.split("eval:")[1];
@@ -160,6 +166,7 @@ class CustomFormViewModel extends BaseViewModel {
     required FormHelper formHelper,
     required List<DoctypeField> fields,
   }) async {
+    LogPrint('custom_form - handleFetchFrom');
     var dependentFields = fields
         .where(
           (element) =>
@@ -176,11 +183,14 @@ class CustomFormViewModel extends BaseViewModel {
         .toList();
 
     if (fetchFromFields.isNotEmpty) {
+      LogPrint('fetchfromfields isNOTEMPTY');
       try {
         var fetchFromVal = await locator<Api>().getdoc(
           fieldValue.field.options,
           fieldValue.value.toString(),
         );
+        LogPrint('fetchfromfields');
+        LogPrint(fetchFromVal.docs[0]);
 
         var fetchDoc = fetchFromVal.docs[0];
         Map<String, dynamic> fetchDoc1 = {};
@@ -198,6 +208,8 @@ class CustomFormViewModel extends BaseViewModel {
             fetchDoc1[element["fieldname"] as String] = v;
           },
         );
+        LogPrint('fetchDoc1');
+        LogPrint(fetchDoc1);
 
         formHelper.updateValues(fetchDoc1);
       } catch (e) {

@@ -117,6 +117,10 @@ class _LinkFieldState extends State<LinkField> with Control, ControlInput {
           LogPrint('item_name');
           LogPrint(widget.doctypeField.options);
           //LogPrint(widget.doc![widget.doctypeField.fieldname]);
+          LogPrint('widget.doc qty');
+          LogPrint(widget.doc!['qty']);
+          //FieldValue(field:widget.doc!['qty']);
+          //widget.doc!['qty'] = 1;
 
         },
         validator: FormBuilderValidators.compose(validators),
@@ -206,6 +210,10 @@ class _LinkFieldState extends State<LinkField> with Control, ControlInput {
                 );
                 LogPrint('link_field - response results');
                 LogPrint(response["results"]);
+                LogPrint(response["results"].length);
+                //FieldValue(field:widget.doc!['qty']);
+                widget.doc!['qty'] = 1;
+
 
                 return response["results"];
               }
