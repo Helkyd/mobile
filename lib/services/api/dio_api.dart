@@ -704,6 +704,9 @@ class DioApi implements Api {
             await OfflineStorage.putItem('$txt${doctype}Link', response.data);
           }
         }
+        LogPrint('dio_api:SearchLink');
+        LogPrint(response.data);
+
         return response.data;
       } else if (response.statusCode == HttpStatus.forbidden) {
         throw ErrorResponse(

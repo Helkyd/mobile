@@ -7,6 +7,7 @@ import 'package:frappe_app/config/palette.dart';
 import 'package:frappe_app/model/common.dart';
 import 'package:frappe_app/utils/frappe_icon.dart';
 import 'package:frappe_app/views/form_view/form_view.dart';
+import 'package:frappe_app/views/new_doc/new_doc_view.dart';
 import 'package:frappe_app/widgets/form_builder_typeahead.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -95,6 +96,10 @@ class _DynamicLinkState extends State<DynamicLink> with Control, ControlInput {
           //     ),
           //   );
           // }
+          LogPrint('OnChanged: child FormBuilderTypeAhead');
+          LogPrint(widget.doctypeField);
+          LogPrint(val!);
+
         },
         controller: widget.controller,
         initialValue: widget.doc[widget.doctypeField.fieldname],
@@ -130,6 +135,8 @@ class _DynamicLinkState extends State<DynamicLink> with Control, ControlInput {
               : null,
         ),
         selectionToTextTransformer: (item) {
+          LogPrint('dynamic_link: selectionToTextTransformer');
+          LogPrint(item!);
           if (item != null) {
             if (item is Map) {
               return item["value"];
@@ -197,5 +204,26 @@ class _DynamicLinkState extends State<DynamicLink> with Control, ControlInput {
             },
       ),
     );
+  }
+  static void LogPrint(Object object) async {
+    int defaultPrintLength = 1020;
+    if (object == null || object.toString().length <= defaultPrintLength) {
+      print(object);
+    } else {
+      String log = object.toString();
+      int start = 0;
+      int endIndex = defaultPrintLength;
+      int logLength = log.length;
+      int tmpLogLength = log.length;
+      while (endIndex < logLength) {
+        print(log.substring(start, endIndex));
+        endIndex += defaultPrintLength;
+        start += defaultPrintLength;
+        tmpLogLength -= defaultPrintLength;
+      }
+      if (tmpLogLength > 0) {
+        print(log.substring(start, logLength));
+      }
+    }
   }
 }

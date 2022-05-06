@@ -107,6 +107,17 @@ class _LinkFieldState extends State<LinkField> with Control, ControlInput {
               ),
             );
           }
+          LogPrint('link_field - onSuggestionSelected');
+          LogPrint('widget.doctypeField');
+          LogPrint(widget.doctypeField);
+          LogPrint(val);
+          LogPrint('widget.doctypeField.fieldname');
+          LogPrint(widget.doctypeField.fieldname);
+          LogPrint(widget.doc!);
+          LogPrint('item_name');
+          LogPrint(widget.doctypeField.options);
+          //LogPrint(widget.doc![widget.doctypeField.fieldname]);
+
         },
         validator: FormBuilderValidators.compose(validators),
         decoration: Palette.formFieldDecoration(
@@ -186,15 +197,41 @@ class _LinkFieldState extends State<LinkField> with Control, ControlInput {
                   }
                 }
               } else {
+                LogPrint('link_field - suggestioncallback');
+                LogPrint(widget.doctypeField);
+                LogPrint(widget.doctypeField.options);
                 var response = await locator<Api>().searchLink(
                   doctype: widget.doctypeField.options,
                   txt: lowercaseQuery,
                 );
+                LogPrint('link_field - response results');
+                LogPrint(response["results"]);
 
                 return response["results"];
               }
             },
       ),
     );
+  }
+  static void LogPrint(Object object) async {
+    int defaultPrintLength = 1020;
+    if (object == null || object.toString().length <= defaultPrintLength) {
+      print(object);
+    } else {
+      String log = object.toString();
+      int start = 0;
+      int endIndex = defaultPrintLength;
+      int logLength = log.length;
+      int tmpLogLength = log.length;
+      while (endIndex < logLength) {
+        print(log.substring(start, endIndex));
+        endIndex += defaultPrintLength;
+        start += defaultPrintLength;
+        tmpLogLength -= defaultPrintLength;
+      }
+      if (tmpLogLength > 0) {
+        print(log.substring(start, logLength));
+      }
+    }
   }
 }

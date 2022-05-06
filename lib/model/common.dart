@@ -89,6 +89,7 @@ class FieldValue {
   });
 
   FieldValue.fromJson(Map<String, dynamic> json) {
+    LogPrint('FieldValue.fromJson');
     field = DoctypeField.fromJson(
       json['field'],
     );
@@ -96,6 +97,7 @@ class FieldValue {
   }
 
   Map<String, dynamic> toJson() {
+    LogPrint('FieldValue toJson');
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['field'] = this.field.toJson();
     data['value'] = this.value;
@@ -106,3 +108,25 @@ class FieldValue {
 typedef OnControlChanged = void Function(
   FieldValue fieldValue,
 );
+
+void LogPrint(Object object) async {
+int defaultPrintLength = 1020;
+if (object == null || object.toString().length <= defaultPrintLength) {
+print(object);
+} else {
+String log = object.toString();
+int start = 0;
+int endIndex = defaultPrintLength;
+int logLength = log.length;
+int tmpLogLength = log.length;
+while (endIndex < logLength) {
+print(log.substring(start, endIndex));
+endIndex += defaultPrintLength;
+start += defaultPrintLength;
+tmpLogLength -= defaultPrintLength;
+}
+if (tmpLogLength > 0) {
+print(log.substring(start, logLength));
+}
+}
+}

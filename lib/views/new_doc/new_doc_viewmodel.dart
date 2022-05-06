@@ -100,17 +100,36 @@ class NewDocViewModel extends BaseViewModel {
         // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
         // Still missing to check how to pass the Price to the price list
 
+        //Helkyds 05-05-2022;
+        //Added for Customers if missing remove:
+        // companies: [{company: }]
+        // accounts: [{company: , account: }]
+        // credit_limits: [{company: , credit_limit: , bypass_credit_limit_check: }]
+        // sales_team: [{sales_person: , contact_no: , allocated_percentage: , allocated_amount: , commission_rate: , incentives: }]
+
+
         LogPrint("new_doc_viewmodel ANTEssssss");
         //LogPrint(formValue);
         var toremove = [];
         formValue.forEach(
               (key, value) {
-
+                //For Items doctype
                 if (key == "reorder_levels" || key == "item_defaults" || key == "customer_items" || key == "taxes"){
                   //check if empty
                   LogPrint(value[0][0]);
                   if (value[0][0] == null){
                     toremove.add(key);
+                  }
+
+                }
+                //For Customers doctype
+                if (meta.docs[0].name == "Customer") {
+                  if (key == "companies" || key == "accounts" || key == "credit_limits" || key == "sales_team"){
+                    //check if empty
+                    if (value[0][0] == null){
+                      toremove.add(key);
+                    }
+
                   }
 
                 }
@@ -126,9 +145,6 @@ class NewDocViewModel extends BaseViewModel {
         if (toremove.isNotEmpty){
           LogPrint('toremove ');
           LogPrint(toremove);
-          //newformValue = Map.fromIterable(formValue.keys.where((k) => k != toremove[0] && k != toremove[1] && k != toremove[2] && k != toremove[3]),
-          //key: (k) => k, value: (v) => formValue[v]);
-
           newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
 
           LogPrint(newformValue);
@@ -137,16 +153,18 @@ class NewDocViewModel extends BaseViewModel {
           }
           LogPrint('DEPOIS DO REMOVE.....');
           LogPrint(newformValue);
-          //toremove.forEach((element) {formValue.remove(element);});
-          /*
-          for (var v in toremove){
-            LogPrint('VAI REMOVE');
-            LogPrint(v);
-            //formValue.remove("$v");
-            formValue.remove("reorder_levels");
-          }
-          */
+
         }
+
+        LogPrint("new_doc_viewmodel DEPOOsssss");
+        LogPrint(formValue);
+        LogPrint("metadoc");
+        LogPrint(meta.docs[0].name);
+        if (newformValue.isNotEmpty){
+          LogPrint("newformValue VAZIO.....");
+          formValue = newformValue;
+        }
+
         //Item Price not adding Item name
         LogPrint("Check Item Price - Item name");
         LogPrint(formValue['item_code']);
@@ -159,26 +177,14 @@ class NewDocViewModel extends BaseViewModel {
           newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
           LogPrint(newformValue);
           formValue.forEach(
-            (key, value) {
-              if (key == "item_name"){
-                LogPrint('TEM que update este...');
+                  (key, value) {
+                if (key == "item_name"){
+                  LogPrint('TEM que update este...');
+                }
               }
-            }
           );
 
         }
-
-
-        LogPrint("new_doc_viewmodel DEPOOsssss");
-        LogPrint(formValue);
-        LogPrint("metadoc");
-        LogPrint(meta.docs[0].name);
-        if (newformValue.isNotEmpty){
-          LogPrint("newformValue VAZIO.....");
-          formValue = newformValue;
-        }
-        //convert
-        //Map tmpdata = Uri.encodeComponent(formValue) as Map;
 
         var response = await locator<Api>().saveDocs(
           meta.docs[0].name,

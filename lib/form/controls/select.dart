@@ -47,6 +47,14 @@ class Select extends StatelessWidget with Control, ControlInput {
     return FormBuilderDropdown(
       key: key,
       onChanged: (dynamic val) {
+        LogPrint('select - FOrmBuilderDropdown: onChanged');
+        LogPrint(doctypeField);
+        LogPrint(val);
+        LogPrint('this.key');
+        LogPrint(key!);
+        LogPrint('this.doc');
+        LogPrint(doc!);
+
         if (onControlChanged != null) {
           onControlChanged!(
             FieldValue(
@@ -69,6 +77,9 @@ class Select extends StatelessWidget with Control, ControlInput {
       ),
       validator: FormBuilderValidators.compose(validators),
       items: opts.toSet().toList().map<DropdownMenuItem>((option) {
+        LogPrint('select - items');
+        LogPrint(option);
+
         return DropdownMenuItem(
           value: option,
           child: option != null
@@ -82,5 +93,26 @@ class Select extends StatelessWidget with Control, ControlInput {
         );
       }).toList(),
     );
+  }
+  static void LogPrint(Object object) async {
+    int defaultPrintLength = 1020;
+    if (object == null || object.toString().length <= defaultPrintLength) {
+      print(object);
+    } else {
+      String log = object.toString();
+      int start = 0;
+      int endIndex = defaultPrintLength;
+      int logLength = log.length;
+      int tmpLogLength = log.length;
+      while (endIndex < logLength) {
+        print(log.substring(start, endIndex));
+        endIndex += defaultPrintLength;
+        start += defaultPrintLength;
+        tmpLogLength -= defaultPrintLength;
+      }
+      if (tmpLogLength > 0) {
+        print(log.substring(start, logLength));
+      }
+    }
   }
 }

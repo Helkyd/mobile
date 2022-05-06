@@ -168,6 +168,13 @@ class FormViewViewModel extends BaseViewModel {
       // Check if "taxes":[{"item_tax_template":"","tax_category":"","valid_from":""}]
       // Still missing to check how to pass the Price to the price list
 
+      //Helkyds 05-05-2022;
+      //Added for Customers if missing remove:
+      // companies: [{company: }]
+      // accounts: [{company: , account: }]
+      // credit_limits: [{company: , credit_limit: , bypass_credit_limit_check: }]
+      // sales_team: [{sales_person: , contact_no: , allocated_percentage: , allocated_amount: , commission_rate: , incentives: }]
+
       LogPrint("form_view_viewmodel ANTEssssss");
       var toremove = [];
       formValue.forEach(
@@ -181,6 +188,15 @@ class FormViewViewModel extends BaseViewModel {
             }
 
           }
+          //For Customers doctype
+          if (meta.name == "Customer") {
+            if (key == "companies" || key == "accounts" || key == "credit_limits" || key == "sales_team"){
+              //check if empty
+              if (value[0][0] == null){
+                toremove.add(key);
+              }
+            }
+          }
         },
       );
 
@@ -188,8 +204,6 @@ class FormViewViewModel extends BaseViewModel {
       if (toremove.isNotEmpty){
         LogPrint('toremove ');
         LogPrint(toremove);
-        //newformValue = Map.fromIterable(formValue.keys.where((k) => k != toremove[0] && k != toremove[1] && k != toremove[2] && k != toremove[3]),
-        //    key: (k) => k, value: (v) => formValue[v]);
 
         newformValue = Map.fromIterable(formValue.keys,key: (k) => k, value: (v) => formValue[v]);
 
